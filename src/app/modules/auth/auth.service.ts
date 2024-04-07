@@ -13,14 +13,17 @@ import { jwtHelpers } from '../../../helpers/jwt'
 // Login
 const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
   //   User Data
-  const { id, password } = payload
+  //@ts-ignore
+  const { number, password } = payload
   //    Check Is User Exist
 
-  const isUserExist = await Users.isUserExist(id)
+  const isUserExist = await Users.isUserExist(number)
+
   // Throw error if user is not exist
   if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist')
   }
+
   // Check Password
   if (
     isUserExist.password &&
@@ -30,17 +33,18 @@ const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
   }
 
   //create access token & refresh token
-  const { userId, role } = isUserExist
+  const { phoneNumber, email, role } = isUserExist
+
   //   Access Token
   const accessToken = jwtHelpers.createToken(
-    { userId, role },
+    { phoneNumber, email, role },
     config.JWT_SECRET as Secret,
     config.JWT_EXPIRES_IN as string,
   )
 
   //   Refresh token
   const refreshToken = jwtHelpers.createToken(
-    { userId, role },
+    { phoneNumber, email, role },
     config.JWT_REFRESH_SECRET as Secret,
     config.JWT_REFRESH_EXPIRES_IN as string,
   )
@@ -76,8 +80,8 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
   // generate new access token
   const newAccessToken = jwtHelpers.createToken(
     {
-      id: isUserExist.userId,
-      role: isUserExist.role,
+      id: isUserExist.phoneNumber,
+      role: isUserExist.email,
     },
     config.JWT_SECRET as Secret,
     config.JWT_EXPIRES_IN as string,

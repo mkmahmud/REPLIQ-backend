@@ -2,14 +2,16 @@ import { Model } from 'mongoose'
 
 export interface IUsers {
   fullName: string
-  userId: string
+  phoneNumber: string
   email: string
-  password: string
   role: string
+  password: string
 }
 
 export type UsersModel = {
-  isUserExist(id: string): Promise<Pick<IUsers, 'userId' | 'password' | 'role'>>
+  isUserExist(
+    phoneNumber: string,
+  ): Promise<Pick<IUsers, 'phoneNumber' | 'password' | 'email' | 'role'>>
   isPasswordMatched(
     givenPassword: string,
     savedPassword: string,

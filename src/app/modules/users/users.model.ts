@@ -9,7 +9,11 @@ const usersSchema = new Schema<IUsers, UsersModel>(
       type: String,
       required: true,
     },
-    userId: {
+    phoneNumber: {
+      type: String,
+      required: true,
+    },
+    role: {
       type: String,
       required: true,
     },
@@ -18,10 +22,6 @@ const usersSchema = new Schema<IUsers, UsersModel>(
       required: true,
     },
     password: {
-      type: String,
-      required: true,
-    },
-    role: {
       type: String,
       required: true,
     },
@@ -36,9 +36,12 @@ const usersSchema = new Schema<IUsers, UsersModel>(
 
 // Check user exists
 usersSchema.statics.isUserExist = async function (
-  userId: string,
+  number: string,
 ): Promise<IUsers | null> {
-  return await Users.findOne({ userId }, { userId: 1, password: 1, role: 1 })
+  return await Users.findOne(
+    { phoneNumber: number },
+    { email: 1, password: 1, fullName: 1, phoneNumber: 1, role: 1 },
+  )
 }
 
 // Check user password

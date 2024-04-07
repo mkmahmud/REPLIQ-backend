@@ -18,6 +18,35 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
   })
 })
 
+// Create Student
+const getAllUsers = catchAsync(async (req: Request, res: Response) => {
+  const result = await usersService.getAllUsers()
+
+  // Send response
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User Data Retrived Successfully',
+    data: result,
+  })
+})
+
+// Create Student
+const getSingleUser = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params
+  const result = await usersService.getSingleUser(id)
+
+  // Send response
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User Data Retrived Successfully',
+    data: result,
+  })
+})
+
 export const usersController = {
   createUser,
+  getAllUsers,
+  getSingleUser,
 }

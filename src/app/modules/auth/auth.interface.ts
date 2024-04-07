@@ -1,6 +1,6 @@
 // login user credentials
 export type ILoginUser = {
-  id: string
+  phoneNumber: string
   password: string
 }
 
